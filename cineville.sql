@@ -1,10 +1,10 @@
-CREATE DATABASE cineville;
+CREATE DATABASE Cineville;
 CREATE USER 'marshall07'@'localhost' IDENTIFIED BY 'marshall';
 GRANT ALL PRIVILEGES ON * . * TO 'marshall07'@'localhost';
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'hawa029';
 GRANT SELECT ON * . * TO 'user'@'localhost';
 
-USE cineville;
+USE Cineville;
 
 CREATE TABLE City
 (
@@ -19,7 +19,7 @@ CREATE TABLE Cinema
     name VARCHAR(50) NULL,
     address VARCHAR(250) NOT NULL ,
     cityId INT  ,
-    FOREIGN KEY (cityId) REFERENCES City(id) ON DELETE SET NULL
+    FOREIGN KEY (cityId) REFERENCES City(id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
@@ -28,7 +28,7 @@ CREATE Table Hall(
     numOfSeat INT NOT NULL,
     hallNumber INT NOT NULL,
     cinemaId INT,
-    FOREIGN KEY (cinemaId) REFERENCES Cinema(id) ON DELETE SET NULL
+    FOREIGN KEY (cinemaId) REFERENCES Cinema(id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
@@ -41,32 +41,32 @@ CREATE Table Hall(
 
 CREATE Table Users(
     id INT NOT NULL PRIMARY KEY  AUTO_INCREMENT,
-    firstName VARCHAR (50) NOT NULL,
-    surName VARCHAR (50) NOT NULL,
+    firstName VARCHAR (100) NOT NULL,
+    surName VARCHAR (100) NOT NULL,
     email VARCHAR(254) NOT NULL,
     password VARCHAR(60) NOT NULL,
     rolesId INT,
-    FOREIGN KEY (rolesId) REFERENCES Roles(id) ON DELETE SET NULL
+    FOREIGN KEY (rolesId) REFERENCES Roles(id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 CREATE Table Movies(
     id INT NOT NULL PRIMARY KEY  AUTO_INCREMENT,
     title VARCHAR (100) NOT NULL ,
-    Duration TIME NOT NULL
+    duration DATETIME
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE Table Streaming(
      id INT NOT NULL PRIMARY KEY  AUTO_INCREMENT,
      dateOfStream date NOT NULL,
-     beginHour time NOT NULL,
-     endHour Time NOT NULL,
+     beginHour datetime NOT NULL,
+     endHour dateTime NOT NULL,
      moviesId INT ,
      cinemaId INT,
      hallId INT,
-     FOREIGN KEY (moviesId) REFERENCES Movies(id) ON DELETE SET NULL,
-     FOREIGN KEY (cinemaId) REFERENCES Cinema(id) ON DELETE SET NULL,
-     FOREIGN KEY (hallId ) REFERENCES Room(id) ON DELETE SET NULL
+     FOREIGN KEY (moviesId) REFERENCES Movies(id),
+     FOREIGN KEY (cinemaId) REFERENCES Cinema(id),
+     FOREIGN KEY (hallId ) REFERENCES Room(id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
@@ -74,9 +74,9 @@ CREATE Table Streaming(
 CREATE Table Bookings( 
     id INT NOT NULL PRIMARY KEY  AUTO_INCREMENT,
     bookingDate date NOT NULL,
-    bookingTime time NOT NULL,
+    bookingTime datetime NOT NULL,
     usersId INT ,
-    FOREIGN KEY (usersId) REFERENCES Users(id) ON DELETE SET NULL
+    FOREIGN KEY (usersId) REFERENCES Users(id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE Table Infos(
@@ -87,29 +87,29 @@ CREATE Table Infos(
 
 CREATE Table Fees (
     id INT NOT NULL PRIMARY KEY  AUTO_INCREMENT,
-    seatNumber DECIMAL(9,0) NOT NULL,
-    Amount DECIMAL(9,2) NOT NULL,
+    seatNumber INT NOT NULL,
+    amount DECIMAL(9,2) NOT NULL,
     bookingId INT ,
     streamId INT ,
     infosId INT ,
-    FOREIGN KEY (bookingId) REFERENCES Bookings (id) ON DELETE SET NULL ,
-    FOREIGN KEY (streamId) REFERENCES Streaming(id) ON DELETE SET NULL,
-    FOREIGN KEY (infosId) REFERENCES Infos (id) ON DELETE SET NULL
+    FOREIGN KEY (bookingId) REFERENCES Bookings (id),
+    FOREIGN KEY (streamId) REFERENCES Streaming(id),
+    FOREIGN KEY (infosId) REFERENCES Infos (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 INSERT INTO City ( zipcode, name) 
 VALUES 
-('44190' , 'Clisson') , 
-('51100' ,'Reims') , 
-('44000' ,'Nantes') , 
-('49000' ,'Angers') ;
+('56110' , 'Le Saint') , 
+('56000' ,'Vannes') , 
+('56190' ,'Nivillac') , 
+('56360' ,'Angers') ;
 
 INSERT INTO Cinema (address,cityId,name) 
 VALUES
-('2 rue des fleurs','1','EVC Clisson'),
-('15 avenue voltaire','2','EVC Reims'),
-('25 Bis rue pierre-Camille ','3','EVC Nantes') ,
-('4 avenue des Iris','4','EVC Angers');
+('2 rue des fleurs','1','Le Saint'),
+('15 avenue voltaire','2','Vannes'),
+('25 Bis rue pierre-Camille ','3','Nivillac') ,
+('4 avenue des Iris','4','Penestin');
 
 INSERT INTO Hall (numOfSeat,hallNumber,cinemaId)
 VALUES
@@ -134,7 +134,7 @@ VALUES
 ('60','3','4'),
 ('30','4','4');
 
-INSERT INTO Roles (role_name)
+INSERT INTO Roles (designation)
 VALUES ('Customers'),('Users'),('Administrator');
 
 
@@ -153,7 +153,7 @@ VALUES
 ('Emilie','Danion', 'mimid@outllok.fr','$2y$10$Yyb9.a23Dhw3f70UlIE3A.485WbK5DnFS2FbNBvwJuyZEOnNe5o9S','3');
 
 
-INSERT INTO Movies (title,Duration)
+INSERT INTO Movies (title,duration)
 VALUES
 ('Alain et son chien','02:03:00'),
 ('La compagnie des anges','01:59:00'),
@@ -173,7 +173,7 @@ VALUES
 ('2022-03-22','19:00:00','21:00:00','5','4','1');
 
 
-INSERT INTO Reservation(Date_Reservation,Hour_Reservation,id_users)
+INSERT INTO Bookings(bookingDate,bookingTime,usersId)
 VALUES
 ('2022-03-16','18:32:00','1'),
 ('2022-03-15','14:03:00','2'),
@@ -184,7 +184,7 @@ VALUES
 INSERT INTO Infos (designation,ticketPrice)
 VALUES ('Plein tarif',"9.20"),('Etudiant','7.60'),('Moins de 14 ans','5.90');
 
-INSERT INTO Fees (seatNumber,Amount,bookingId,streamId,infosId)
+INSERT INTO Fees (seatNumber,amount,bookingId,streamId,infosId)
 VALUES
 ('2','18.40','1','3','1'),
 ('1','07.60','3','4','2'),
@@ -204,4 +204,6 @@ ORDER BY Streaming.beginHour ;
 SELECT Cinema.name AS 'cinéma', City.zipcode AS 'Code postal', City.name AS 'Ville'
 FROM Cinema
 JOIN City on city.id = Cinema.cityId,
+
+
 

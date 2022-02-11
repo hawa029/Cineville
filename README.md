@@ -17,8 +17,3 @@ Modalités / Restrictions :
   que des relations et contraintes entre elles
 - Remplissage des tables avec de fausses données (toujours à l’aide de commandes SQL)
 - Explication dans la description du projet d’un processus de sauvegarde de la BDD complète
-
-### Nécessité de travailler uniquement dans le terminal !
-
-Notez toutes vos commandes dans un fichier .sql. Un export d’une application comme phpMyAdmin ne
-sera pas accepté.
