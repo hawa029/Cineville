@@ -155,12 +155,12 @@ VALUES
 
 INSERT INTO Movies (title,duration)
 VALUES
-('Alain et son chien','02:03:00'),
-('La compagnie des anges','01:59:00'),
+('Override','02:03:00'),
+('Orchestre des anges','01:59:00'),
 ('Le grimmoire magique','01:35:00'),
-('A coté de toi ','01:45:00'),
-('Ma soeur et moi','01:54:00'),
-('Le petit alain','01:48:00');
+('Un matin de printemps ','01:45:00'),
+('Des yeux bleus','01:54:00'),
+('Hors des clous','01:48:00');
 
 
 INSERT INTO Streaming (date,beginHour,endHour,moviesId,cinemaId,hallId)
